@@ -1,32 +1,14 @@
 import { PropsWithChildren } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-
-import { palette, spacing } from '@/src/theme/palette';
 
 export function Screen({ children }: PropsWithChildren) {
   return (
-    <LinearGradient colors={[palette.canvas, '#F0DDC1', '#DDB07E']} style={styles.background}>
-      <View style={styles.overlay} />
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+    <LinearGradient colors={['#F5E9D6', '#F0DDC1', '#DDB07E']} className="flex-1">
+      <View className="absolute inset-0 bg-[rgba(255,255,255,0.24)]" />
+      <ScrollView contentContainerClassName="gap-[22px] px-[22px] pb-[140px] pt-[50px]" showsVerticalScrollIndicator={false}>
         {children}
       </ScrollView>
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255,255,255,0.24)',
-  },
-  content: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xxl + 10,
-    paddingBottom: 140,
-    gap: spacing.lg,
-  },
-});

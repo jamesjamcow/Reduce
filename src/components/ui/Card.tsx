@@ -1,23 +1,25 @@
 import { PropsWithChildren } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
-import { palette, radii, spacing } from '@/src/theme/palette';
-
-export function Card({ children, style }: PropsWithChildren<{ style?: StyleProp<ViewStyle> }>) {
-  return <View style={[styles.card, style]}>{children}</View>;
+export function Card({
+  children,
+  style,
+  className,
+}: PropsWithChildren<{ style?: StyleProp<ViewStyle>; className?: string }>) {
+  return (
+    <View
+      className={`rounded-[28px] border border-[#10201b24] bg-[rgba(250,244,234,0.92)] p-[22px] ${className ?? ''}`}
+      style={[
+        {
+          shadowColor: 'rgba(20,24,18,0.12)',
+          shadowOffset: { width: 0, height: 12 },
+          shadowOpacity: 0.18,
+          shadowRadius: 24,
+          elevation: 4,
+        },
+        style,
+      ]}>
+      {children}
+    </View>
+  );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: 'rgba(250, 244, 234, 0.92)',
-    borderRadius: radii.lg,
-    borderWidth: 1,
-    borderColor: palette.border,
-    padding: spacing.lg,
-    shadowColor: palette.shadow,
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.18,
-    shadowRadius: 24,
-    elevation: 4,
-  },
-});

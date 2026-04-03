@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Button } from '@/src/components/ui/Button';
 import { Card } from '@/src/components/ui/Card';
@@ -10,7 +10,6 @@ import { TextInput } from '@/src/components/ui/TextInput';
 import { saveParsedCapture } from '@/src/db/repository';
 import { syncReminderNotifications } from '@/src/services/reminders';
 import { useAppStore } from '@/src/stores/appStore';
-import { palette, spacing } from '@/src/theme/palette';
 
 export default function ReviewScreen() {
   const pendingReview = useAppStore((state) => state.pendingReview);
@@ -24,8 +23,8 @@ export default function ReviewScreen() {
   if (!pendingReview) {
     return (
       <Screen>
-        <Card style={styles.block}>
-          <Text style={styles.title}>No review payload</Text>
+        <Card style={{ gap: 16 }}>
+          <Text className="font-mono text-[24px] text-ink">No review payload</Text>
           <Button label="Back To Feed" onPress={() => router.replace('/')} />
         </Card>
       </Screen>
@@ -60,30 +59,30 @@ export default function ReviewScreen() {
 
   return (
     <Screen>
-      <Card style={styles.block}>
-        <Text style={styles.title}>Review capture</Text>
+      <Card style={{ gap: 16 }}>
+        <Text className="font-mono text-[24px] text-ink">Review capture</Text>
         <TextInput value={people} onChangeText={setPeople} placeholder="People" />
         <TextInput value={title} onChangeText={setTitle} placeholder="Title" />
         <TextInput value={body} onChangeText={setBody} placeholder="Parsed body" multiline />
 
-        <View style={styles.row}>
+        <View className="flex-row flex-wrap gap-2">
           {review.tags.map((tag) => (
             <Badge key={tag} label={`#${tag}`} tone="soft" />
           ))}
         </View>
 
         {review.duplicateCandidates.length > 0 ? (
-          <Card style={styles.duplicateCard}>
-            <Text style={styles.section}>Possible duplicates</Text>
+          <Card style={{ gap: 10 }}>
+            <Text className="text-[16px] font-bold text-ink">Possible duplicates</Text>
             {review.duplicateCandidates.map((candidate) => (
-              <Text key={`${candidate.inputName}-${candidate.existingPersonId}`} style={styles.copy}>
+              <Text key={`${candidate.inputName}-${candidate.existingPersonId}`} className="text-[14px] leading-[20px] text-[#10201b9e]">
                 {candidate.inputName} might be the same as {candidate.existingPersonName}
               </Text>
             ))}
           </Card>
         ) : null}
 
-        <View style={styles.actions}>
+        <View className="flex-row flex-wrap gap-[10px]">
           <Button label="Discard" variant="ghost" onPress={() => router.back()} />
           <Button label="Save Capture" onPress={handleSave} loading={saving} />
         </View>
@@ -91,37 +90,3 @@ export default function ReviewScreen() {
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  block: {
-    gap: spacing.md,
-  },
-  title: {
-    color: palette.ink,
-    fontFamily: 'SpaceMono',
-    fontSize: 24,
-  },
-  section: {
-    color: palette.ink,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  copy: {
-    color: palette.muted,
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    flexWrap: 'wrap',
-  },
-  duplicateCard: {
-    gap: spacing.sm,
-  },
-});

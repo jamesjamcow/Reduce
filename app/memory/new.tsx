@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Button } from '@/src/components/ui/Button';
 import { Card } from '@/src/components/ui/Card';
@@ -9,7 +9,6 @@ import { TextInput } from '@/src/components/ui/TextInput';
 import { createManualMemory } from '@/src/db/repository';
 import { syncReminderNotifications } from '@/src/services/reminders';
 import { useAppStore } from '@/src/stores/appStore';
-import { palette, spacing } from '@/src/theme/palette';
 import { isoFromUnix, unixFromInput } from '@/src/utils/dates';
 
 export default function ManualMemoryScreen() {
@@ -48,8 +47,8 @@ export default function ManualMemoryScreen() {
 
   return (
     <Screen>
-      <Card style={styles.block}>
-        <Text style={styles.title}>Manual memory</Text>
+      <Card style={{ gap: 16 }}>
+        <Text className="font-mono text-[24px] text-ink">Manual memory</Text>
         <TextInput value={people} onChangeText={setPeople} placeholder="People, comma separated" />
         <TextInput value={title} onChangeText={setTitle} placeholder="Capture title" />
         <TextInput value={body} onChangeText={setBody} placeholder="Context" multiline />
@@ -57,7 +56,7 @@ export default function ManualMemoryScreen() {
         <TextInput value={eventDate} onChangeText={setEventDate} placeholder="2026-04-15T10:00" />
         <TextInput value={eventLocation} onChangeText={setEventLocation} placeholder="Location" />
         <TextInput value={insight} onChangeText={setInsight} placeholder="Insight" multiline />
-        <View style={styles.actions}>
+        <View className="flex-row flex-wrap gap-[10px]">
           <Button label="Cancel" variant="ghost" onPress={() => router.back()} />
           <Button label="Save Memory" onPress={handleSave} loading={saving} />
         </View>
@@ -65,19 +64,3 @@ export default function ManualMemoryScreen() {
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  block: {
-    gap: spacing.md,
-  },
-  title: {
-    color: palette.ink,
-    fontFamily: 'SpaceMono',
-    fontSize: 24,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    flexWrap: 'wrap',
-  },
-});

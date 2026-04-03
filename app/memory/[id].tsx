@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Card } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
@@ -7,7 +7,6 @@ import { Screen } from '@/src/components/ui/Screen';
 import { useMemoryDetail } from '@/src/hooks/useMemoryDetail';
 import { addEventToCalendar } from '@/src/services/calendar';
 import { Button } from '@/src/components/ui/Button';
-import { palette, spacing } from '@/src/theme/palette';
 import { formatTimestamp } from '@/src/utils/dates';
 
 export default function MemoryDetailScreen() {
@@ -18,7 +17,7 @@ export default function MemoryDetailScreen() {
     return (
       <Screen>
         <Card>
-          <Text style={styles.title}>Memory not found</Text>
+          <Text className="font-mono text-[24px] text-ink">Memory not found</Text>
         </Card>
       </Screen>
     );
@@ -29,10 +28,10 @@ export default function MemoryDetailScreen() {
 
   return (
     <Screen>
-      <Card style={styles.block}>
-        <Text style={styles.title}>{bundle.memory.title}</Text>
-        <Text style={styles.copy}>{bundle.memory.body || 'No body text saved.'}</Text>
-        <View style={styles.row}>
+      <Card style={{ gap: 16 }}>
+        <Text className="font-mono text-[24px] text-ink">{bundle.memory.title}</Text>
+        <Text className="text-[15px] leading-[22px] text-[#10201b9e]">{bundle.memory.body || 'No body text saved.'}</Text>
+        <View className="flex-row flex-wrap gap-2">
           {bundle.people.map((person) => (
             <Badge key={person.id} label={person.name} tone="soft" />
           ))}
@@ -40,13 +39,13 @@ export default function MemoryDetailScreen() {
       </Card>
 
       {bundle.events.length > 0 ? (
-        <Card style={styles.block}>
-          <Text style={styles.section}>Events</Text>
+        <Card style={{ gap: 16 }}>
+          <Text className="font-mono text-[18px] text-ink">Events</Text>
           {bundle.events.map((event) => (
-            <View key={event.id} style={styles.item}>
-              <Text style={styles.itemTitle}>{event.title}</Text>
-              <Text style={styles.copy}>{formatTimestamp(event.eventDate)}</Text>
-              {event.location ? <Text style={styles.copy}>{event.location}</Text> : null}
+            <View key={event.id} className="gap-2 border-b border-[#10201b24] pb-[10px]">
+              <Text className="text-[16px] font-bold text-ink">{event.title}</Text>
+              <Text className="text-[15px] leading-[22px] text-[#10201b9e]">{formatTimestamp(event.eventDate)}</Text>
+              {event.location ? <Text className="text-[15px] leading-[22px] text-[#10201b9e]">{event.location}</Text> : null}
             </View>
           ))}
           {primaryEvent ? (
@@ -60,63 +59,21 @@ export default function MemoryDetailScreen() {
       ) : null}
 
       {bundle.insights.length > 0 ? (
-        <Card style={styles.block}>
-          <Text style={styles.section}>Insights</Text>
+        <Card style={{ gap: 16 }}>
+          <Text className="font-mono text-[18px] text-ink">Insights</Text>
           {bundle.insights.map((insight) => (
-            <View key={insight.id} style={styles.item}>
+            <View key={insight.id} className="gap-2 border-b border-[#10201b24] pb-[10px]">
               <Badge label={insight.category} tone="accent" />
-              <Text style={styles.copy}>{insight.content}</Text>
+              <Text className="text-[15px] leading-[22px] text-[#10201b9e]">{insight.content}</Text>
             </View>
           ))}
         </Card>
       ) : null}
 
-      <Card style={styles.block}>
-        <Text style={styles.section}>Raw OCR</Text>
-        <Text style={styles.raw}>{bundle.memory.rawOcrText || 'No OCR text stored.'}</Text>
+      <Card style={{ gap: 16 }}>
+        <Text className="font-mono text-[18px] text-ink">Raw OCR</Text>
+        <Text className="text-[14px] leading-[22px] text-dusk">{bundle.memory.rawOcrText || 'No OCR text stored.'}</Text>
       </Card>
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  block: {
-    gap: spacing.md,
-  },
-  title: {
-    color: palette.ink,
-    fontFamily: 'SpaceMono',
-    fontSize: 24,
-  },
-  section: {
-    color: palette.ink,
-    fontFamily: 'SpaceMono',
-    fontSize: 18,
-  },
-  copy: {
-    color: palette.muted,
-    fontSize: 15,
-    lineHeight: 22,
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  item: {
-    gap: 8,
-    paddingBottom: spacing.sm,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: palette.border,
-  },
-  itemTitle: {
-    color: palette.ink,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  raw: {
-    color: palette.dusk,
-    fontSize: 14,
-    lineHeight: 22,
-  },
-});

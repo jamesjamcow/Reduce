@@ -1,6 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
-
-import { palette, radii } from '@/src/theme/palette';
+import { Text, View } from 'react-native';
 
 export function PersonAvatar({ name, size = 48 }: { name: string; size?: number }) {
   const initials = name
@@ -11,24 +9,10 @@ export function PersonAvatar({ name, size = 48 }: { name: string; size?: number 
     .toUpperCase();
 
   return (
-    <View style={[styles.avatar, { width: size, height: size, borderRadius: size / 2 }]}>
-      <Text style={styles.label}>{initials}</Text>
+    <View
+      className="items-center justify-center border-2 border-[rgba(255,255,255,0.35)] bg-ink"
+      style={{ width: size, height: size, borderRadius: size / 2 }}>
+      <Text className="text-[16px] font-extrabold text-mist">{initials}</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  avatar: {
-    backgroundColor: palette.ink,
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.35)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: radii.pill,
-  },
-  label: {
-    color: palette.mist,
-    fontSize: 16,
-    fontWeight: '800',
-  },
-});

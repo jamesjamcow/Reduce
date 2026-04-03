@@ -1,6 +1,4 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
-
-import { palette, radii, spacing } from '@/src/theme/palette';
+import { ActivityIndicator, Pressable, Text } from 'react-native';
 
 interface ButtonProps {
   label: string;
@@ -12,64 +10,25 @@ interface ButtonProps {
 
 export function Button({ label, onPress, variant = 'primary', disabled, loading }: ButtonProps) {
   const isPrimary = variant === 'primary';
-  const isSecondary = variant === 'secondary';
+  const classes = isPrimary
+    ? 'min-h-12 items-center justify-center rounded-full bg-ink px-6'
+    : variant === 'secondary'
+      ? 'min-h-12 items-center justify-center rounded-full border border-[#10201b24] bg-sand px-6'
+      : 'min-h-12 items-center justify-center rounded-full border border-[#10201b24] bg-transparent px-6';
 
   return (
     <Pressable
       disabled={disabled || loading}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.base,
-        isPrimary && styles.primary,
-        isSecondary && styles.secondary,
-        variant === 'ghost' && styles.ghost,
-        (disabled || loading) && styles.disabled,
-        pressed && !disabled && !loading && styles.pressed,
-      ]}>
+      className={`${classes} ${(disabled || loading) ? 'opacity-50' : ''}`}
+      style={({ pressed }) => [{ transform: [{ scale: pressed && !disabled && !loading ? 0.98 : 1 }] }]}>
       {loading ? (
-        <ActivityIndicator color={isPrimary ? palette.mist : palette.ink} />
+        <ActivityIndicator color={isPrimary ? '#FAF4EA' : '#10201B'} />
       ) : (
-        <Text style={[styles.label, !isPrimary && styles.darkLabel]}>{label}</Text>
+        <Text className={`text-[14px] font-bold uppercase tracking-[0.8px] ${isPrimary ? 'text-mist' : 'text-ink'}`}>
+          {label}
+        </Text>
       )}
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    minHeight: 48,
-    borderRadius: radii.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
-  },
-  primary: {
-    backgroundColor: palette.ink,
-  },
-  secondary: {
-    backgroundColor: palette.sand,
-    borderWidth: 1,
-    borderColor: palette.border,
-  },
-  ghost: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: palette.border,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  pressed: {
-    transform: [{ scale: 0.98 }],
-  },
-  label: {
-    color: palette.mist,
-    fontSize: 14,
-    fontWeight: '700',
-    letterSpacing: 0.8,
-    textTransform: 'uppercase',
-  },
-  darkLabel: {
-    color: palette.ink,
-  },
-});

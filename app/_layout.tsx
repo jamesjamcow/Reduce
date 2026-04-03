@@ -2,11 +2,12 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import 'react-native-reanimated';
 import 'react-native-get-random-values';
+import '../global.css';
 
 import { initializeDatabase } from '@/src/db/client';
 import { markPastRemindersSent, seedDemoData } from '@/src/db/repository';
@@ -61,8 +62,8 @@ export default function RootLayout() {
       <View style={styles.loading}>
         <StatusBar style="dark" />
         <ActivityIndicator color={palette.ink} size="large" />
-        <Text style={styles.title}>Reduce</Text>
-        <Text style={styles.subtitle}>Loading your network memory.</Text>
+        <Text className="font-mono text-[24px] text-ink">Reduce</Text>
+        <Text className="text-[14px] text-[#10201b9e]">Loading your network memory.</Text>
       </View>
     );
   }
@@ -84,21 +85,12 @@ export default function RootLayout() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   loading: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
     gap: 16,
     backgroundColor: palette.canvas,
   },
-  title: {
-    color: palette.ink,
-    fontFamily: 'SpaceMono',
-    fontSize: 24,
-  },
-  subtitle: {
-    color: palette.muted,
-    fontSize: 14,
-  },
-});
+};

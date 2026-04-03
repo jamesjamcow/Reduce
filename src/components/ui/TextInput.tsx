@@ -1,33 +1,15 @@
 import { forwardRef } from 'react';
-import { StyleSheet, TextInput as RNTextInput, TextInputProps, View } from 'react-native';
-
-import { palette, radii, spacing } from '@/src/theme/palette';
+import { TextInput as RNTextInput, TextInputProps, View } from 'react-native';
 
 export const TextInput = forwardRef<RNTextInput, TextInputProps>(function TextInput(props, ref) {
   return (
-    <View style={styles.shell}>
+    <View className="rounded-[18px] border border-[#10201b24] bg-[rgba(255,255,255,0.45)] px-4 py-[6px]">
       <RNTextInput
         ref={ref}
-        placeholderTextColor={palette.muted}
-        style={styles.input}
+        placeholderTextColor="rgba(16,32,27,0.62)"
+        className="min-h-[42px] text-[15px] text-ink"
         {...props}
       />
     </View>
   );
-});
-
-const styles = StyleSheet.create({
-  shell: {
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: palette.border,
-    backgroundColor: 'rgba(255,255,255,0.45)',
-    paddingHorizontal: spacing.md,
-    paddingVertical: 6,
-  },
-  input: {
-    color: palette.ink,
-    minHeight: 42,
-    fontSize: 15,
-  },
 });
