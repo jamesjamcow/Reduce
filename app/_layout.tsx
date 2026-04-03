@@ -1,5 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
@@ -13,6 +13,7 @@ import { initializeDatabase } from '@/src/db/client';
 import { markPastRemindersSent, seedDemoData } from '@/src/db/repository';
 import { requestNotificationPermissions } from '@/src/services/notifications';
 import { processPendingQueue } from '@/src/services/queue';
+import { consumeInitialSharedImage, subscribeToSharedImages } from '@/src/services/shareIntent';
 import { palette } from '@/src/theme/palette';
 import { useAppStore } from '@/src/stores/appStore';
 
@@ -56,6 +57,27 @@ export default function RootLayout() {
       active = false;
     };
   }, [bumpDataVersion, initialized, loaded, setInitialized]);
+
+  useEffect(() => {
+    if (!initialized) return;
+
+    let active = true;
+
+    consumeInitialSharedImage().then((parsed) => {
+      if (!active || !parsed) return;
+      router.push('/review');
+    });
+
+    const unsubscribe = subscribeToSharedImages(() => {
+      if (!active) return;
+      router.push('/review');
+    });
+
+    return () => {
+      active = false;
+      unsubscribe();
+    };
+  }, [initialized]);
 
   if (!loaded || !initialized) {
     return (
